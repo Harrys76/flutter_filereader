@@ -14,7 +14,7 @@ public class EmbedderV1Activity extends FlutterActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("FileReader", "v1 初始化");
+        Log.e("FileReader", "v1 initialization");
         FlutterFileReaderPlugin.registerWith(registrarFor("wv.io/FileReader"));
         PermissionHandlerPlugin.registerWith(registrarFor("flutter.baseflow.com/permissions/methods"));
         PathProviderPlugin.registerWith(registrarFor("plugins.flutter.io/path_provider"));

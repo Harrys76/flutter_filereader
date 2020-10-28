@@ -10,26 +10,26 @@ import android.net.NetworkInfo;
 
 public class NetUtil {
     /**
-     * 没有网络
+     * No internet
      */
     public static final int NETWORK_NONE = -1;
     /**
-     * 移动网络
+     * mobile network
      */
     public static final int NETWORK_MOBILE = 0;
     /**
-     * 无线网络
+     * wireless network
      */
     public static final int NETWORK_WIFI = 1;
 
     public static int getNetWorkState(Context context) {
-        //得到连接管理器对象
+        //Get the connection manager object
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkInfo activeNetworkInfo = connectivityManager
                     .getActiveNetworkInfo();
-            //如果网络连接，判断该网络类型
+            //If network connection，Determine the network type
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 if (activeNetworkInfo.getType() == (ConnectivityManager.TYPE_WIFI)) {
                     return NETWORK_WIFI;//wifi
@@ -37,7 +37,7 @@ public class NetUtil {
                     return NETWORK_MOBILE;//mobile
                 }
             } else {
-                //网络异常
+                //network anomaly
                 return NETWORK_NONE;
             }
         }

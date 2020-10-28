@@ -28,7 +28,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  */
 public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler, FlutterPlugin, ActivityAware {
 
-    private int x5LoadStatus = -1; // -1 未加载状态  5 成功 10 失败
+    private int x5LoadStatus = -1; // -1 Unloaded state 5 success 10 failure
 
     public static final String channelName = "wv.io/FileReader";
     private Context ctx;
@@ -63,7 +63,7 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
     }
 
     private void onDestory() {
-        Log.e("FileReader", "销毁");
+        Log.e("FileReader", "destroy");
         if (netBroadcastReceiver != null && ctx != null) {
             ctx.unregisterReceiver(netBroadcastReceiver);
         }
@@ -87,19 +87,19 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
 
 
     public void netBroadcastRegister(final Context context) {
-        //实例化IntentFilter对象
+        //Instantiate the IntentFilter object
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         netBroadcastReceiver = new NetBroadcastReceiver(new NetBroadcastReceiver.NetChangeListener() {
             @Override
             public void onChangeListener(int status) {
-                // -1 没有网络
+                // -1 No internet
                 if (x5LoadStatus != 5 && status != -1) {
                     initX5(context);
                 }
             }
         });
-        //注册广播接收
+        //Register for broadcast reception
         context.registerReceiver(netBroadcastReceiver, filter);
 
 
@@ -107,13 +107,14 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
 
 
     public void initX5(final Context context) {
-        Log.e("FileReader", "初始化X5");
+        Log.e("FileReader", "Initialize X5");
         if (!QbSdk.canLoadX5(context)) {
-            //重要
+            //important
             QbSdk.reset(context);
         }
         preInitCallback = new QbSdkPreInitCallback();
-        // 在调用TBS初始化、创建WebView之前进行如下配置，以开启优化方案
+        // Initialize when calling TBS、Make the following configuration before creating WebView
+        // To open the optimization plan
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
@@ -123,18 +124,18 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
         QbSdk.setTbsListener(new TbsListener() {
             @Override
             public void onDownloadFinish(int i) {
-                Log.e("FileReader", "TBS下载完成");
+                Log.e("FileReader", "TBS download complete");
             }
 
             @Override
             public void onInstallFinish(int i) {
-                Log.e("FileReader", "TBS安装完成");
+                Log.e("FileReader", "TBS installation is complete");
 
             }
 
             @Override
             public void onDownloadProgress(int i) {
-                Log.e("FileReader", "TBS下载进度:" + i);
+                Log.e("FileReader", "TBS download progress:" + i);
             }
         });
 
@@ -222,7 +223,7 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
 
         @Override
         public void onCoreInitFinished() {
-            Log.e("FileReader", "TBS内核初始化结束");
+            Log.e("FileReader", "TBS kernel initialization ends");
         }
 
         @Override
@@ -232,18 +233,18 @@ public class FlutterFileReaderPlugin implements MethodChannel.MethodCallHandler,
             }
             if (b) {
                 x5LoadStatus = 5;
-                Log.e("FileReader", "TBS内核初始化成功" + "--" + QbSdk.canLoadX5(ctx));
+                Log.e("FileReader", "TBS kernel initialized successfully" + "--" + QbSdk.canLoadX5(ctx));
             } else {
                 x5LoadStatus = 10;
                 resetQbSdkInit();
-                Log.e("FileReader", "TBS内核初始化失败" + "--" + QbSdk.canLoadX5(ctx));
+                Log.e("FileReader", "TBS kernel initialization failed" + "--" + QbSdk.canLoadX5(ctx));
             }
             onX5LoadComplete();
         }
     }
 
 
-    ///反射 重置初始化状态(没网情况下加载失败)
+    ///Reflection Reset the initialization state (loading fails when there is no network)
     private void resetQbSdkInit() {
         try {
             Field field = QbSdk.class.getDeclaredField("s");

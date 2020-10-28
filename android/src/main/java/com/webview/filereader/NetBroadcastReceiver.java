@@ -22,18 +22,19 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        // 如果相等的话就说明网络状态发生了变化
+        // If they are equal, the network status has changed
         Log.i("NetBroadcastReceiver", "NetBroadcastReceiver changed");
         if (intent.getAction() != null && intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             int netWorkState = NetUtil.getNetWorkState(context);
-            // 当网络发生变化，判断当前网络状态，并通过NetEvent回调当前网络状态
+            // When the network changes，Determine the current network status,
+            // And call back the current network status through NetEvent
             if (listener != null) {
                 listener.onChangeListener(netWorkState);
             }
         }
     }
 
-    // 自定义接口
+    // Custom interface
     public interface NetChangeListener {
         void onChangeListener(int status);
     }

@@ -16,7 +16,8 @@
     <application android:networkSecurityConfig="@xml/android_q_net_security_config" android:hardwareAccelerated="true">
 
 
-        <!--     在AndroidManifest.xml中增加内核首次加载时优化Service声明；    该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。  -->
+        <!--     Add to AndroidManifest.xml to optimize the Service statement when the kernel is first loaded
+        The Service is only triggered and executed when the TBS kernel Dex is loaded for the first time, and the dex2oat task is automatically terminated after the task is completed. 。  -->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"

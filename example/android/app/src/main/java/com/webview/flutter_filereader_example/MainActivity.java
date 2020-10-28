@@ -10,7 +10,7 @@ public class MainActivity extends FlutterActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.e("FileReader", "v2 初始化");
+    Log.e("FileReader", "v2 initialization");
   }
 
 }
